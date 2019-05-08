@@ -1,3 +1,8 @@
 <h1 class="mt-4">Dashboard</h1>
 <p class="lead mb-3">Welcome <%= name %></p>
+<% if (typeof(profile) == 'undefined') { %>
+	<p>Welcome! Please <a href="/twitter/login">log in</a>.</p>
+<% } else { %>
+	<p>Hello, <%= profile.displayName %>. View your <a href="/twitter/profile">profile</a>.</p>
+<% } %>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>
