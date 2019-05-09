@@ -17,6 +17,14 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    token: {
+        type: String,
+        required: false
+    },
+    tokenSecret: {
+        type: String,
+        required: false
+    },
     posts: {
         type: Array,
         required: false

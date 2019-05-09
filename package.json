@@ -13,6 +13,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "connect": "^3.6.6",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.0.0",
@@ -22,6 +23,8 @@
     "express-session": "^1.16.1",
     "mongoose": "^5.5.5",
     "morgan": "^1.9.1",
+    "node-twitter-api": "^1.8.0",
+    "oauth": "^0.9.15",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4"

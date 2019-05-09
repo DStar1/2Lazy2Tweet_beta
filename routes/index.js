@@ -13,23 +13,18 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     console.dir(profile);
     console.log("\n\n\nUser\n");
     console.dir(req.user);
+    console.log(req.isAuthenticated());
+
     // console.log("YOOOOOO" + profile.screen_name);
+    const loggedIn = typeof(req.session.oauth) != 'undefined' ? req.session.oauth.access_token_results : 0;
     res.render("dashboard", {
         // user: user,
-        profile: profile,
+        loggedIn: loggedIn,
         name: req.user.name
     });
 }
 );
 
-// // Dashboard
-// router.get('/dashboard', ensureAuthenticated, (req, res) => {
-//     // console.log(req.user);
-//     res.render("dashboard", {
-//         name: req.user.name
-//     });
-// }
-// );
 module.exports = router;
 
                         // // Set password to hashed

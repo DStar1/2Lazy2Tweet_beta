@@ -94,6 +94,9 @@ router.post('/login', (req, res, next) => {
 // Logout handle
 router.get('/logout', (req, res, next) => {
     req.logout();
+    req.session.oauth = 'undefined';
+    console.log(req.session.oauth);
+
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 });
