@@ -14,21 +14,22 @@
 
 </head>
 <body>
-	<br></br>
+
     <h1>2Lazy2Tweet</h1>
     <dl></dl>
-	<p class="lead mb-3">Welcome <%= name %></p>
-	<% if (!loggedIn) { %>
-		<p>Welcome! Please <a href="/twitter/login">log in</a>.</p>
-	<% } else { %>
-		<p>You are logged into to twitter as <%= loggedIn.screen_name %>. View your <a href=<%= "https://twitter.com/" + loggedIn.screen_name %>>profile</a>.</p>
-	<% } %>
-	<br></br>
-	<a href="/users/logout" class="btn btn-secondary">Logout</a>
-
     <p>Tweet Queue Empty</p>
 
     <form>
+        <!-- <input type="text" id="date" name="date" placeholder="new date..." required /> -->
+        <!-- <div class="form-group">
+            <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                <input id="date" name="date" placeholder="new date..." required >
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" /><br/>
+        </div> -->
+
         <div class='input-group date' id='datetimepicker1'>
             <input type='text' class="form-control" id="date" name="date" placeholder="new date..." required />
             <span class="input-group-addon">
@@ -70,7 +71,7 @@
                 forceParse: 0,
                 showMeridian: 1
             });
-	</script>
+</script>
 
 </body>
 </html>

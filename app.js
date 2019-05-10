@@ -5,7 +5,9 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const { ensureAuthenticated } = require("./config/auth");
-
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cron = require('node-cron');
 
 // var trustProxy = false;
 // if (process.env.DYNO) {
@@ -31,6 +33,7 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Bodyparser
+// app.use(require('body-parser').urlencoded({ extended: true }));// Need?
 app.use(express.urlencoded({ extended: false }));
 
 // Express session
@@ -54,6 +57,18 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 });
+
+
+// // Not sure?
+// app.use(express.static("./views"));
+app.use(express.static("./public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use((req, res, next) => {
+	console.log(`${req.method} request for '${req.url}' - ${JSON.stringify(req.body)}`);
+	next();
+});
+app.use(cors());
 
 // Routes
 app.use('/', require('./routes/index'));
