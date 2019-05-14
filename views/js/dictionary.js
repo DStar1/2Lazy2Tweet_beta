@@ -1,9 +1,9 @@
 $(document).ready(function () {
 
-    $.getJSON('/dictionary-api', printTerms);
+    $.getJSON('/api/posts', printTerms);
     $('form').submit(function (e) {
         e.preventDefault();
-        $.post('/dictionary-api', {date: $('#date').val(), post: $('#post').val()}, printTerms);
+        $.post('/api/posts', {date: $('#date').val(), post: $('#post').val()}, printTerms);
         this.reset();
     });
 
@@ -17,7 +17,7 @@ function printTerms(terms) {
     });
     $('dt').off('dblclick').dblclick(function() {
         $.ajax({
-            url: '/dictionary-api/' + $(this).text(),
+            url: '/api/posts/' + $(this).text(),
             type: 'DELETE',
             success: printTerms
         });

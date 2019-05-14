@@ -67,6 +67,13 @@ router.post('/register', (req, res) => {
                         if (err) throw err;
                         // Set password to hashed
                         newUser.password = hash;
+
+                        newUser.posts.push({
+                            dateToPost: Date.now(),
+                            posted: 0,
+                            post: "Example post for "+email+"! Double click to delete."
+                        });
+
                         // Save user
                         newUser.save()
                         .then(user => {
