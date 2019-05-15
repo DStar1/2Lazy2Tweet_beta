@@ -52,7 +52,7 @@ dt:hover {
 }
 
 .elem {
-  background-color:hsl(0, 0%, 81%);
+  /* background-color:hsl(0, 0%, 81%); */
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   align-items: center;
@@ -65,10 +65,23 @@ dt:hover {
   font-size: calc(7px + 1vmin);
 }
 .posts {
+  /* margin-top: 2%; */
+  padding: .3%;
+  background-color:hsl(0, 0%, 81%);
   color:hsl(0, 0%, 45%);
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   align-items: center;
+  box-sizing: border-box;
+  border: 2px solid rgb(175, 175, 175);
+  border-radius: 12px;
+}
+.break {
+  color:hsl(0, 0%, 84%);
+  background-color:hsl(0, 0%, 81%);
+}
+.posts:after {
+  border: 2px solid rgb(175, 175, 175);
 }
 .dt {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
