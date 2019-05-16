@@ -75,6 +75,25 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
 
+app.get('/auth', (req, res) => {
+  // console.dir(req.session);
+  // req.user.name;
+  const twit = (typeof(req.session.oauth) === 'undefined') ? 0 : 1;
+  console.dir({
+    "name":req.user.name,
+    "email":req.user.email,
+    "twitter": twit
+  });
+  if (typeof req.session.passport !== 'undefined') {
+    res.json({
+      "name":req.user.name,
+      "email":req.user.email,
+      "twitter": twit
+    });
+    // res.json(req.session.passport.user);
+  }
+});
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, console.log(`Server started on PORT ${PORT}`));

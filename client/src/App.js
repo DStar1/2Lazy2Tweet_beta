@@ -11,40 +11,29 @@ import Auth from './modules/auth';
 
 class PostList extends React.Component {
   state = {
-    posts: []
+    posts: [],
+    user: 'undefined'
   }
 
   componentDidMount() {
-    axios.get("/api/posts")
+      axios.get("/auth")
       .then(res => {
-        const posts = res.data;
-        this.setState({ posts });
-      })
+        const user = res.data;
+        console.dir(user);
+        this.setState({ user });
+        axios.get("/api/posts")
+          .then(res => {
+            const posts = res.data;
+            this.setState({ posts });
+        });
+      });
   }
 
   render() {
-    // const { isAuthenticated } = this.props.auth;
-
-    // const userLinks = (
-    //   <ul className="nav navbar-nav navbar-right">
-    //     <li><a href="#" onClick={this.logout.bind(this)}>Logout</a></li>
-    //   </ul>
-    // );
-
-    // const guestLinks = (
-    //   <ul className="nav navbar-nav navbar-right">
-    //     <li><a href="#" onClick={this.logout.bind(this)}>Logout</a></li>
-    //   </ul>
-    // );
-    
-    //////// FUCK SESSIONS /////////
-    if (Auth.isUserAuthenticated()) return("Login");
-    else {
-    return (
-      <div className="elem" id="elem">
-        <h1 className="App-header" id="App-header">2Lazy2Tweet</h1>
-        <FormEnter />
-        { this.state.posts.map(post =>
+    const user = (
+      <div>
+        <p>{this.state.user.name}'s Post Queue</p>
+          { this.state.posts.map(post =>
             <div>
               <div className="posts" id="posts">
                 <h className="dt" id="dt">Date:</h>
@@ -58,14 +47,32 @@ class PostList extends React.Component {
               <div className="break" id="break"></div>
             </div>
       )}
-      <a href="http://localhost:8080/users/logout" classNmae="btn btn-secondary">Logout</a>
       <br></br>
-      {document.getElementById("sid")}
+      <a href="http://localhost:8080/users/logout" classNmae="btn btn-secondary">Logout</a>
+      </div>
+    );
+
+    const guest = (
+      <ul className="nav navbar-nav navbar-right">
+        <a href="http://localhost:8080" classNmae="btn btn-secondary">Login</a>
+      </ul>
+    );
+    
+    // //////// FUCK SESSIONS /////////
+    // if (this.state.user === 'undefined') return(
+    //   <a href="http://localhost:8080" classNmae="btn btn-secondary">Login</a>
+    // );
+    // else {
+    return (
+      <div className="elem" id="elem">
+        <h1 className="App-header" id="App-header">2Lazy2Tweet</h1>
+        <FormEnter/>
+        {(this.state.user === 'undefined') ? guest : user}
       </div>
     )
   }
 }
-}
+// }
 // }
 // function mapStateToProps(state) {
 //   return {

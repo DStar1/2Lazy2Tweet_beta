@@ -17,7 +17,10 @@ router.get('/', (req, res) => res.render("welcome"));
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
     ////// res.json(twitterPosts);
-    res.redirect("/api/posts");
+    // req.session.username = req.user;
+    console.dir(req.session);
+    res.redirect("http://localhost:3000");
+    // res.redirect("/api/posts");
 
 
     // // // const user = undefined;//require('connect-ensure-login').ensureLoggedIn() ? req.user : none;
@@ -42,7 +45,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 });
 
 
-router.get("/api/posts", (req, res) => {
+router.get("/api/posts", ensureAuthenticated, (req, res) => {
     // const loggedIn = typeof(req.session.oauth) != 'undefined' ? req.session.oauth.access_token_results : 0;
     // // res.redirect("http://localhost:3000");///////// FOR FRONTEND ROUTING
     // // console.dir(req.user.email);
@@ -66,16 +69,24 @@ router.get("/api/posts", (req, res) => {
         }
 
     })
-    .catch(err => console.log(err));
+    .catch(err => {console.log(err); res.redirect("/login");});
 
 	
 });
 
-router.post("/api/posts", (req, res) => {
+router.post("/api/posts", ensureAuthenticated, (req, res) => {
     // Create cron to run backend
     // createCronAutomation(req.body); //Maybe push to firebase first?
     // twitterPosts.push(req.body);
     // res.json(twitterPosts);
+
+    // let data = {
+    //     dateToPost: req.body.dateToPost,
+    //     posted: 0,
+    //     post: req.body.post
+    // }
+
+    // User.findOne( {email: req.user.email} )
 
     User.findOne( {email: req.user.email} )
     .then(user => {
@@ -85,11 +96,14 @@ router.post("/api/posts", (req, res) => {
             // Create cron to run backend
             // createCronAutomation(req.body); //Maybe push to firebase first?
             
-            user.posts.push({
-                dateToPost: req.body.date,
+            let data = {
+                dateToPost: req.body.dateToPost,
                 posted: 0,
                 post: req.body.post
-            });
+            }
+
+            user.posts.push(data);
+
             user.save();
 
             // twitterPosts.push(req.body);// Push to db
@@ -107,7 +121,7 @@ router.post("/api/posts", (req, res) => {
 });
 
 // Fix deleting of two of the same datetime objects
-router.delete("/api/posts/:date", (req, res) => {
+router.delete("/api/posts/:date", ensureAuthenticated, (req, res) => {
     twitterPosts = twitterPosts.filter((post) => {
         return post.date.toLowerCase() !== req.params.date.toLowerCase();
     });

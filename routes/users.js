@@ -3,6 +3,12 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 const passport = require("passport");
 
+function dateUTC(today) {
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    return date+' '+time;
+}
+
 // User model
 const User = require('../models/User');
 
@@ -67,9 +73,9 @@ router.post('/register', (req, res) => {
                         if (err) throw err;
                         // Set password to hashed
                         newUser.password = hash;
-
+                        let today = new Date();
                         newUser.posts.push({
-                            dateToPost: Date.now(),
+                            dateToPost: dateUTC(today),
                             posted: 0,
                             post: "Example post for "+email+"! Double click to delete."
                         });
