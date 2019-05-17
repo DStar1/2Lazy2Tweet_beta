@@ -15,8 +15,8 @@ function sendTweet(args) {//status=args[0], text = "altText", mediaPath=null) {
     // config.access_token = token;
     // config.access_token_secret = tokenSecret;
     const T = new Twit({
-        consumer_key:         auth.consumerToken,
-        consumer_secret:      auth.consumerTokenSecret,
+        consumer_key:         config.consumerToken,
+        consumer_secret:      config.consumerTokenSecret,
         access_token:         token,
         access_token_secret:  tokenSecret,
         timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.

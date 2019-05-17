@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './Form.css'
-import { Calendar, CalendarCell, CalendarWeekCell, CalendarNavigationItem, CalendarHeaderTitle, DateInput, DatePicker, TimePicker, MultiViewCalendar, DateRangePicker, DateTimePicker } from '@progress/kendo-react-dateinputs'
+import { DateTimePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-react-intl'
 import '@progress/kendo-react-tooltip'
 import '@progress/kendo-react-common'
@@ -51,7 +51,7 @@ export default class FormEnter extends React.Component {
                 />
         {/* <input onChange={this.handleDate.bind(this)} type="text" name="dateToPost" placeholder="Enter date here" /> */}
         <input onChange={this.handlePost.bind(this)} type="text" name="post" placeholder="Enter post here" />
-        <button onClick={this.handleSubmit.bind(this)}>Submit</button>
+        <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button>
       </form>
       <p>{JSON.stringify(this.state)}</p>
     </div>

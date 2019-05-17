@@ -1,4 +1,5 @@
 const express = require("express");
+const cron = require('node-cron');
 const router = express.Router();
 const { ensureAuthenticated } = require("../config/auth");
 
@@ -70,8 +71,6 @@ router.get("/api/posts", ensureAuthenticated, (req, res) => {
 
     })
     .catch(err => {console.log(err); res.redirect("/login");});
-
-	
 });
 
 router.post("/api/posts", ensureAuthenticated, (req, res) => {
@@ -94,7 +93,7 @@ router.post("/api/posts", ensureAuthenticated, (req, res) => {
             // User exists
             console.log("USER", user.name, "IS ADDING", req.body, "TO DB.");
             // Create cron to run backend
-            // createCronAutomation(req.body); //Maybe push to firebase first?
+            createCronAutomation(req.body, req.session.oauth); //Maybe push to firebase first?
             
             let data = {
                 dateToPost: req.body.dateToPost,
@@ -206,31 +205,43 @@ module.exports = router;
                         // // Save user
                         // newUser.save()
 
-        function createCronAutomation(body) {
-            let min = body.date.substring(14, 16);
-            let hour = body.date.substring(11, 13);
-            let day = body.date.substring(8, 10);
-            let mon = body.date.substring(5, 7);
-            let year = body.date.substring(0, 4);
+        function createCronAutomation(body, oauth) {
+            let utcDate1 = new Date(Date.parse(body.dateToPost));
+            // console.log(utcDate1.hour());
+            let min = utcDate1.getMinutes();
+            let hour = utcDate1.getHours();
+            let day = utcDate1.getUTCDate();
+            let mon = utcDate1.getUTCMonth() + 1;
+            let year = utcDate1.getUTCFullYear();
+            // let min = body.dateToPost.substring(14, 16);
+            // let hour = body.dateToPost.substring(11, 13);
+            // let day = body.dateToPost.substring(8, 10);
+            // let mon = body.dateToPost.substring(5, 7);
+            // let year = body.dateToPost.substring(0, 4);
         
             let dateTimeCronFormat = min + " " + hour + " " + day + " " + mon + " *";// "* * * * *"
-            // console.log(dateTimeCronFormat, '\n', year, mon, day, hour, min);
-            console.log('Sending Tweet on ' + body.date + '\nPost: \'' + body.post + '\'');
+            console.log(dateTimeCronFormat, '\n', year, mon, day, hour, min);
+            console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
             let mediaPath = "";
             let post = '\'' + body.post + '\'';
-            let token = '\'' + '1125629520596234241-ThOpOFCgdjvFVASI6wqRUxl6CFfJlh' + '\'';//ha_test
-            let tokenSecret =  '\'' + 'mnhvraTofTXs8GsNANlyx216BXKBKc7jx8oFgs4mmfUNH' + '\'';//ha_test
+            let token = '\'' + oauth.oauth_access_token + '\'';//ha_test
+            let tokenSecret =  '\'' + oauth.oauth_access_token_secret + '\'';//ha_test
+            // let token = '\'' + '1125629520596234241-ThOpOFCgdjvFVASI6wqRUxl6CFfJlh' + '\'';//ha_test
+            // let tokenSecret =  '\'' + 'mnhvraTofTXs8GsNANlyx216BXKBKc7jx8oFgs4mmfUNH' + '\'';//ha_test
             // tweet.sendTweet(body.post);
-            // console.log('Sending Tweet on ' + body.date + '\nPost: \'' + body.post + '\'');
-            cron.schedule(dateTimeCronFormat, function() {
+            let cronString = "node twitterPost.js " + token + ' ' + tokenSecret + ' ' + post + mediaPath;
+            console.log(cronString);
+            // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
+            cron.schedule(cronString, function() {
         
                 // Runs node script
                 const exec = require('child_process').exec;
                 function puts(error, stdout, stderr) { console.log(stdout); }
-                exec("node twitterPost.js " + token + ' ' + tokenSecret + ' ' + post + mediaPath, puts);
+                // console.log(cronString);
+                exec(cronString, puts);
         
                 // console.log("IN CRON: ");
-                // console.log('Sending Tweet on ' + body.date + '\nPost: \'' + body.post + '\'');
+                // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
                 // tweet.sendTweet(body.post);
             });
         }

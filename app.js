@@ -78,12 +78,13 @@ app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
 app.get('/auth', (req, res) => {
   // console.dir(req.session);
   // req.user.name;
-  const twit = (typeof(req.session.oauth) === 'undefined') ? 0 : 1;
-  console.dir({
-    "name":req.user.name,
-    "email":req.user.email,
-    "twitter": twit
-  });
+  let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
+  console.dir(req.session.oauth);
+  // console.dir({
+  //   "name":req.user.name,
+  //   "email":req.user.email,
+  //   "twitter": twit
+  // });
   if (typeof req.session.passport !== 'undefined') {
     res.json({
       "name":req.user.name,
@@ -92,6 +93,8 @@ app.get('/auth', (req, res) => {
     });
     // res.json(req.session.passport.user);
   }
+  else
+    res.json(req.session.passport.user);
 });
 
 const PORT = process.env.PORT || 8080;

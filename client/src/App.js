@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import FormEnter from './Form.js';
 import axios from 'axios';
-import Auth from './modules/auth';
+// import Auth from './modules/auth';
 // import { connect } from 'react-redux';
 
 // const NoMatch = () => (
@@ -15,24 +15,32 @@ class PostList extends React.Component {
     user: 'undefined'
   }
 
+  // loggedInTwitter = <a href="http://localhost:8080/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
+  // connected = <div className="twitterGreen">Twitter Connected</div>;
   componentDidMount() {
       axios.get("/auth")
       .then(res => {
         const user = res.data;
-        console.dir(user);
+        // console.dir(user);
         this.setState({ user });
+        this.loggedInTwitter = (user.twitter) ? <div className="twitterGreen">{user.twitter} Twitter Connected</div> : <a href="http://localhost:8080/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
+        console.dir(user);
+        console.log("Connected to the didMount funct where you tell it twitter");
         axios.get("/api/posts")
           .then(res => {
             const posts = res.data;
             this.setState({ posts });
+            console.dir(posts);
         });
       });
   }
-
+  // notLoggedInTwitter = <a href="http://localhost:8080/twitter/login" classNmae="btn btn-secondary">Connect Twitter</a>;
+  
   render() {
     const user = (
       <div>
-        <p>{this.state.user.name}'s Post Queue</p>
+        {this.loggedInTwitter}
+        {/* <p>{this.state.user.name}'s Post Queue</p> */}
           { this.state.posts.map(post =>
             <div>
               <div className="posts" id="posts">
@@ -48,13 +56,13 @@ class PostList extends React.Component {
             </div>
       )}
       <br></br>
-      <a href="http://localhost:8080/users/logout" classNmae="btn btn-secondary">Logout</a>
+      <a href="http://localhost:8080/users/logout" className="btn btn-secondary">Logout</a>
       </div>
     );
 
     const guest = (
       <ul className="nav navbar-nav navbar-right">
-        <a href="http://localhost:8080" classNmae="btn btn-secondary">Login</a>
+        <a href="http://localhost:8080" className="btn btn-secondary">Login</a>
       </ul>
     );
     
