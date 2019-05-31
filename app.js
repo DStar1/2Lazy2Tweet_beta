@@ -21,7 +21,8 @@ const app = express();
 require("./config/passport")(passport);
 
 // DB Config
-const db = require("./config/keys").MongoURI;
+const db = process.env.MONGO_URI;
+// const db = require("./config/keys").MongoURI; //non Heroku
 
 // Connect to Mongo
 mongoose.connect(db, { useNewUrlParser: true })

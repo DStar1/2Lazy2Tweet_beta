@@ -1,6 +1,6 @@
 const Twit = require('twit'); //https://github.com/ttezel/twit
 const fs = require('fs');
-const config = require('./config/keys')
+// const config = require('./config/keys')
 
 const args = process.argv.slice(2);
 
@@ -15,8 +15,12 @@ function sendTweet(args) {//status=args[0], text = "altText", mediaPath=null) {
     // config.access_token = token;
     // config.access_token_secret = tokenSecret;
     const T = new Twit({
+        consumer_key:         process.env.CONSUMER_TOKEN,
+        consumer_secret:      process.env.CONSUMER_TOKEN_SECRET,
         consumer_key:         config.consumerToken,
         consumer_secret:      config.consumerTokenSecret,
+        // consumer_key:         config.consumerToken,
+        // consumer_secret:      config.consumerTokenSecret,
         access_token:         token,
         access_token_secret:  tokenSecret,
         timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
