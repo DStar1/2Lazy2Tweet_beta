@@ -22,7 +22,8 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     ////// res.json(twitterPosts);
     // req.session.username = req.user;
     console.dir(req.session);
-    res.redirect("http://localhost:3000");
+    res.redirect("https://lazy2tweet.firebaseapp.com");
+    // res.redirect("http://localhost:3000");
     // res.redirect("/api/posts");
 
 

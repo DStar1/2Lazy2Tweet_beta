@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && NODE_ENV=development npm install --no-shrinkwrap && npm run build"
   },
   "keywords": [],
   "author": "",

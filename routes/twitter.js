@@ -29,7 +29,7 @@ function createOAuthClient(){
                       consumerToken,
                       consumerTokenSecret,
                       "1.0",
-                      'http://localhost:5000/twitter/oauth/callback',
+                      'https://still-refuge-69608.herokuapp.com/twitter/oauth/callback',
                       "HMAC-SHA1");
 }
 
