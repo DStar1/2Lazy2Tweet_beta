@@ -73,6 +73,7 @@ app.use(cors());
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+// app.use('/upload', require('./routes/upload'));
 app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
 
 app.get('/auth', (req, res) => {
@@ -97,7 +98,7 @@ app.get('/auth', (req, res) => {
     res.json(req.session.passport.user);
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 

@@ -7,16 +7,22 @@ import '@progress/kendo-react-tooltip'
 import '@progress/kendo-react-common'
 import '@progress/kendo-react-popup'
 import '@progress/kendo-date-math'
+import { ENGINE_METHOD_NONE } from 'constants';
 
 
 export default class FormEnter extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      'dateToPost': '',
-      'post': ''
+      dateToPost: '',
+      post: '',
+      media: null,
+      loggedInTwitter: 0
     }
   }
+  componentDidMount() {
+    this.setState({ loggedInTwitter: this.props.twitter});
+}
   handleDate(e){
     // console.log(e.target.value);
     this.setState({
@@ -29,9 +35,26 @@ export default class FormEnter extends React.Component {
       post: e.target.value
     });
   }
+  handleMediaPath(e){
+    // console.log(e.target.value);
+    this.setState({
+      media: e.target.files[0]//value
+    });
+  }
+  
   handleSubmit(e){
-     //call the api here with current state value (this.state.username)
-    //  console.log(this.state);
+    // let bodyFormData = new FormData();
+    // bodyFormData.append(this.state);
+    // // bodyFormData.append('image', fs.createReadStream(pathToFile));
+    
+    //  //call the api here with current state value (this.state.username)
+    // //  console.log(this.state);
+    //  axios.post("/api/posts", bodyFormData, {
+    //   headers: {
+    //       'accept': 'application/json',
+    //       'accept-language': 'en_US'
+    //   }
+    // });
      axios.post("/api/posts", this.state, {
       headers: {
           'accept': 'application/json',
@@ -40,18 +63,26 @@ export default class FormEnter extends React.Component {
     });
   }
   render(){
+  // console.log("TRYING TO GET TWITTER TO PASS OBJECT!!!");
+  // console.dir(this.props.twitter);
+  // console.log(this.state.loggedInTwitter);
    return(
      <div>
-      <form>
+      <form action="fileupload" enctype="multipart/form-data">
       <DateTimePicker 
                             // name="date"
                             // value={this.state.post}
                             // onChange={e => this.setState({ post: e.target.value })}
                             onChange={this.handleDate.bind(this)}
+                            required
                 />
         {/* <input onChange={this.handleDate.bind(this)} type="text" name="dateToPost" placeholder="Enter date here" /> */}
-        <input onChange={this.handlePost.bind(this)} type="text" name="post" placeholder="Enter post here" />
-        <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button>
+        <input onChange={this.handlePost.bind(this)} type="text" name="post" placeholder="Enter post here" required/>
+        <input className="btn btn-secondary" onChange={this.handleMediaPath.bind(this)} type="file" name="mediaPath" accept="image/x-png,image/gif,image/jpeg"></input>
+   {/* {(typeof this.props.twitter !== 'undefined') ? <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button> : <div className="btn btn-secondary" >Log in to twitter</div>} */}
+   {/* <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button> */}
+   {/* {(this.state.twitter) ? <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button> : <div className="btn btn-secondary" >Log in to twitter</div>} */}
+   {(this.props.twitter) ? <button className="btn btn-secondary" onClick={this.handleSubmit.bind(this)}>Submit</button> : <div className="btn btn-secondary" >Twitter not connected</div>}
       </form>
       <p>{JSON.stringify(this.state)}</p>
     </div>

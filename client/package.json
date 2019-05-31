@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@progress/kendo-date-math": "1.4.0",
     "@progress/kendo-react-common": "2.10.0",

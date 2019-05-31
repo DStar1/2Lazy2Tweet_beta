@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 var postSchema = new mongoose.Schema({
     dateToPost: String,
+    twitter: {
+        type: String,
+        default: "<NO_USER>"
+    },
     posted: Boolean,
     time: { type: Date, default: Date.now },
     post: String

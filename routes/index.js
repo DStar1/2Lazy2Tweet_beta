@@ -1,6 +1,8 @@
 const express = require("express");
 const cron = require('node-cron');
 const router = express.Router();
+const formidable = require('formidable');
+const fs = require('fs');
 const { ensureAuthenticated } = require("../config/auth");
 
 // User model
@@ -86,21 +88,41 @@ router.post("/api/posts", ensureAuthenticated, (req, res) => {
     // }
 
     // User.findOne( {email: req.user.email} )
-
+    console.log("\n\n\n\n\n\nMEDIA\n\n\n\n\n\n\n")
+    console.dir(req.body.files);
+    console.dir(req.body);
     User.findOne( {email: req.user.email} )
     .then(user => {
         if (user) {
+
+            // Trying to handle image data
+            let form = new formidable.IncomingForm();
+            form.parse(req, function (err, fields, files) {
+              console.dir(fields);
+              let oldpath = files.filetoupload.path;
+              console.log(oldpath);
+              let newpath = '/nfs/2017/h/hasmith' + files.filetoupload.name;
+              console.log("\n\nPATHHHHHHSSSSS\n\n", oldpath, " -> ", newpath);
+            // //   let newpath = 'C:/Users/hasmith/' + files.filetoupload.name;
+            //   fs.rename(oldpath, newpath, function (err) {
+            //     if (err) throw err;
+            //     res.write('File uploaded and moved!');
+            //     res.end();
+            //   });
+            });
+
             // User exists
             console.log("USER", user.name, "IS ADDING", req.body, "TO DB.");
             // Create cron to run backend
-            createCronAutomation(req.body, req.session.oauth); //Maybe push to firebase first?
-            
+            // createCronAutomation(req.body, req.session.oauth); //Maybe push to firebase first?
+            let twit = (typeof(req.session.oauth) === 'undefined') ? "NO_USER>" : req.session.oauth.access_token_results.screen_name;
             let data = {
                 dateToPost: req.body.dateToPost,
+                twitter: twit,
                 posted: 0,
                 post: req.body.post
             }
-
+            console.log(data);
             user.posts.push(data);
 
             user.save();
@@ -205,44 +227,43 @@ module.exports = router;
                         // // Save user
                         // newUser.save()
 
-        function createCronAutomation(body, oauth) {
-            let utcDate1 = new Date(Date.parse(body.dateToPost));
-            // console.log(utcDate1.hour());
-            let min = utcDate1.getMinutes();
-            let hour = utcDate1.getHours();
-            let day = utcDate1.getUTCDate();
-            let mon = utcDate1.getUTCMonth() + 1;
-            let year = utcDate1.getUTCFullYear();
-            // let min = body.dateToPost.substring(14, 16);
-            // let hour = body.dateToPost.substring(11, 13);
-            // let day = body.dateToPost.substring(8, 10);
-            // let mon = body.dateToPost.substring(5, 7);
-            // let year = body.dateToPost.substring(0, 4);
-        
-            let dateTimeCronFormat = min + " " + hour + " " + day + " " + mon + " *";// "* * * * *"
-            console.log(dateTimeCronFormat, '\n', year, mon, day, hour, min);
-            console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
-            let mediaPath = "";
-            let post = '\'' + body.post + '\'';
-            let token = '\'' + oauth.oauth_access_token + '\'';//ha_test
-            let tokenSecret =  '\'' + oauth.oauth_access_token_secret + '\'';//ha_test
-            // let token = '\'' + '1125629520596234241-ThOpOFCgdjvFVASI6wqRUxl6CFfJlh' + '\'';//ha_test
-            // let tokenSecret =  '\'' + 'mnhvraTofTXs8GsNANlyx216BXKBKc7jx8oFgs4mmfUNH' + '\'';//ha_test
-            // tweet.sendTweet(body.post);
-            let cronString = "node twitterPost.js " + token + ' ' + tokenSecret + ' ' + post + mediaPath;
-            console.log(cronString);
-            // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
-            cron.schedule(cronString, function() {
-        
-                // Runs node script
-                const exec = require('child_process').exec;
-                function puts(error, stdout, stderr) { console.log(stdout); }
-                // console.log(cronString);
-                exec(cronString, puts);
-        
-                // console.log("IN CRON: ");
-                // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
-                // tweet.sendTweet(body.post);
-            });
-        }
-        
+function createCronAutomation(body, oauth) {
+    let utcDate1 = new Date(Date.parse(body.dateToPost));
+    // console.log(utcDate1.hour());
+    let min = utcDate1.getMinutes();
+    let hour = utcDate1.getHours();
+    let day = utcDate1.getUTCDate();
+    let mon = utcDate1.getUTCMonth() + 1;
+    let year = utcDate1.getUTCFullYear();
+    // let min = body.dateToPost.substring(14, 16);
+    // let hour = body.dateToPost.substring(11, 13);
+    // let day = body.dateToPost.substring(8, 10);
+    // let mon = body.dateToPost.substring(5, 7);
+    // let year = body.dateToPost.substring(0, 4);
+
+    let dateTimeCronFormat = min + " " + hour + " " + day + " " + mon + " *";// "* * * * *"
+    console.log(dateTimeCronFormat, '\n', year, mon, day, hour, min);
+    console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
+    let mediaPath = "";
+    let post = '\'' + body.post + '\'';
+    let token = '\'' + oauth.oauth_access_token + '\'';//ha_test
+    let tokenSecret =  '\'' + oauth.oauth_access_token_secret + '\'';//ha_test
+    // let token = '\'' + '1125629520596234241-ThOpOFCgdjvFVASI6wqRUxl6CFfJlh' + '\'';//ha_test
+    // let tokenSecret =  '\'' + 'mnhvraTofTXs8GsNANlyx216BXKBKc7jx8oFgs4mmfUNH' + '\'';//ha_test
+    // tweet.sendTweet(body.post);
+    let cronString = "node twitterPost.js " + token + ' ' + tokenSecret + ' ' + post + mediaPath;
+    console.log(cronString);
+    // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
+    cron.schedule(cronString, function() {
+
+        // Runs node script
+        const exec = require('child_process').exec;
+        function puts(error, stdout, stderr) { console.log(stdout); }
+        // console.log(cronString);
+        exec(cronString, puts);
+
+        // console.log("IN CRON: ");
+        // console.log('Sending Tweet on ' + body.dateToPost + '\nPost: \'' + body.post + '\'');
+        // tweet.sendTweet(body.post);
+    });
+}

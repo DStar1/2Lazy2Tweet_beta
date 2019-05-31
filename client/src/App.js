@@ -12,10 +12,12 @@ import axios from 'axios';
 class PostList extends React.Component {
   state = {
     posts: [],
-    user: 'undefined'
+    user: 'undefined',
+    loggedInTwitter: 0,
+    twitter: 0
   }
 
-  // loggedInTwitter = <a href="http://localhost:8080/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
+  // loggedInTwitter = <a href="http://localhost:5000/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
   // connected = <div className="twitterGreen">Twitter Connected</div>;
   componentDidMount() {
       axios.get("/auth")
@@ -23,7 +25,8 @@ class PostList extends React.Component {
         const user = res.data;
         // console.dir(user);
         this.setState({ user });
-        this.loggedInTwitter = (user.twitter) ? <div className="twitterGreen">{user.twitter} Twitter Connected</div> : <a href="http://localhost:8080/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
+        this.setState({ loggedInTwitter: (user.twitter) ? <div className="twitterGreen">{user.twitter} Twitter Connected</div> : <a href="http://localhost:5000/twitter/login" classNmae="twitterNot">Connect Twitter</a>});
+        this.setState({ twitter: (user.twitter) ? 1 : 0 });
         console.dir(user);
         console.log("Connected to the didMount funct where you tell it twitter");
         axios.get("/api/posts")
@@ -34,19 +37,23 @@ class PostList extends React.Component {
         });
       });
   }
-  // notLoggedInTwitter = <a href="http://localhost:8080/twitter/login" classNmae="btn btn-secondary">Connect Twitter</a>;
+  // notLoggedInTwitter = <a href="http://localhost:5000/twitter/login" classNmae="btn btn-secondary">Connect Twitter</a>;
   
   render() {
     const user = (
       <div>
-        {this.loggedInTwitter}
+        <FormEnter twitter={this.state.twitter}/>
+        {this.state.loggedInTwitter}
+        {/* <br></br> */}
         {/* <p>{this.state.user.name}'s Post Queue</p> */}
           { this.state.posts.map(post =>
             <div>
               <div className="posts" id="posts">
-                <h className="dt" id="dt">Date:</h>
+                <h className="dt" id="dt">Twitter: {post.twitter}</h>
                 <br></br>
-                <h className="dt" id="dt">{post.dateToPost}</h>
+                <h className="dt" id="dt">Date: {post.dateToPost}</h>
+                {/* <br></br>
+                <h className="dt" id="dt">{post.dateToPost}</h> */}
                 <br></br>
                 <h className="post" id="post">Post:</h>
                 <br></br>
@@ -56,25 +63,27 @@ class PostList extends React.Component {
             </div>
       )}
       <br></br>
-      <a href="http://localhost:8080/users/logout" className="btn btn-secondary">Logout</a>
+      <a href="http://localhost:5000/users/logout" className="btn btn-secondary">Logout</a>
       </div>
     );
 
     const guest = (
+      <div>
+      <FormEnter twitter={0}/>
       <ul className="nav navbar-nav navbar-right">
-        <a href="http://localhost:8080" className="btn btn-secondary">Login</a>
+        <a href="http://localhost:5000" className="btn btn-secondary">Login</a>
       </ul>
+      </div>
     );
     
     // //////// FUCK SESSIONS /////////
     // if (this.state.user === 'undefined') return(
-    //   <a href="http://localhost:8080" classNmae="btn btn-secondary">Login</a>
+    //   <a href="http://localhost:5000" classNmae="btn btn-secondary">Login</a>
     // );
     // else {
     return (
       <div className="elem" id="elem">
         <h1 className="App-header" id="App-header">2Lazy2Tweet</h1>
-        <FormEnter/>
         {(this.state.user === 'undefined') ? guest : user}
       </div>
     )

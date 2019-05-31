@@ -180,13 +180,13 @@ if (1) {
           <button type="submit">Schedule Post</button>
           </div>
         </form>
-        <a href="http://localhost:8080/users/logout" >Logout</a>
+        <a href="http://localhost:5000/users/logout" >Logout</a>
         <p>{this.state.responseToPost}</p>
       </div>
     );
         } else {
           return (
-            <a href="http://localhost:8080" >Login</a>
+            <a href="http://localhost:5000" >Login</a>
           );
         }
 
