@@ -9,11 +9,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cron = require('node-cron');
 
-// var trustProxy = false;
-// if (process.env.DYNO) {
-//   // Apps on heroku are behind a trusted proxy
-//   trustProxy = true;
-// }
+var trustProxy = false;
+if (process.env.DYNO) {
+  // Apps on heroku are behind a trusted proxy
+  trustProxy = true;
+}
 
 const app = express();
 
