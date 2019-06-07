@@ -1,6 +1,9 @@
 {
   "name": "twitter_passport_sign_in_node",
   "version": "1.0.0",
+  "engines": {
+    "node": "11.14.0"
+  },
   "description": "",
   "main": "app.js",
   "scripts": {
