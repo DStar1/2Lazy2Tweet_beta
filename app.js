@@ -79,7 +79,6 @@ app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
 
 app.get('/auth', (req, res) => {
   // console.dir(req.session);
-  // req.user.name;
   let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
   console.dir(req.session.oauth);
   // console.dir({
