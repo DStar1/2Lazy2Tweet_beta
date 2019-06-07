@@ -20,7 +20,7 @@ class PostList extends React.Component {
   // loggedInTwitter = <a href="https://still-refuge-69608.herokuapp.com/twitter/login" classNmae="twitterNot">Connect Twitter</a>;
   // connected = <div className="twitterGreen">Twitter Connected</div>;
   componentDidMount() {
-      axios.get("/auth")
+      axios.get("https://still-refuge-69608.herokuapp.com/auth")
       .then(res => {
         const user = res.data;
         // console.dir(user);
@@ -29,7 +29,7 @@ class PostList extends React.Component {
         this.setState({ twitter: (user.twitter) ? 1 : 0 });
         console.dir(user);
         console.log("Connected to the didMount funct where you tell it twitter");
-        axios.get("/api/posts")
+        axios.get("https://still-refuge-69608.herokuapp.com/api/posts")
           .then(res => {
             const posts = res.data;
             this.setState({ posts });
@@ -40,6 +40,7 @@ class PostList extends React.Component {
   // notLoggedInTwitter = <a href="https://still-refuge-69608.herokuapp.com/twitter/login" classNmae="btn btn-secondary">Connect Twitter</a>;
   
   render() {
+    console.dir(this.state.posts)
     const user = (
       <div>
         <FormEnter twitter={this.state.twitter}/>

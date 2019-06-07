@@ -68,7 +68,7 @@ export default class FormEnter extends React.Component {
   // console.log(this.state.loggedInTwitter);
    return(
      <div>
-      <form action="fileupload" enctype="multipart/form-data">
+      <form action="fileupload" encType="multipart/form-data">
       <DateTimePicker 
                             // name="date"
                             // value={this.state.post}

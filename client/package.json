@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "homepage": "https://lazy2tweet.firebaseapp.com",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://still-refuge-69608.herokuapp.com",
