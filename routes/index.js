@@ -22,6 +22,26 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     ////// res.json(twitterPosts);
     // req.session.username = req.user;
     console.dir(req.session);
+
+    // COOKIES
+    let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
+    console.dir(req.session.oauth);
+    if (typeof req.session.passport !== 'undefined') {
+        res.cookie('user', {
+            "name":req.user.name,
+            "email":req.user.email,
+            "twitter": twit
+        });
+        // req.session.cookie.user =  {
+        //     "name":req.user.name,
+        //     "email":req.user.email,
+        //     "twitter": twit
+        // }
+    }
+    // else {
+    //     // res.json(req.session.passport.user);
+    //     res.cookie('user', req.session.passport.user);
+    // }
     res.redirect("https://lazy2tweet.firebaseapp.com");
     // res.redirect("http://localhost:3000");
     // res.redirect("/api/posts");

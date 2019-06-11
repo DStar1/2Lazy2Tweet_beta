@@ -8,6 +8,7 @@ const { ensureAuthenticated } = require("./config/auth");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cron = require('node-cron');
+const cookieParser = require('cookie-parser');
 
 var trustProxy = false;
 if (process.env.DYNO) {
@@ -36,6 +37,7 @@ app.set('view engine', 'ejs');
 // Bodyparser
 // app.use(require('body-parser').urlencoded({ extended: true }));// Need?
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Express session
 app.use(session({

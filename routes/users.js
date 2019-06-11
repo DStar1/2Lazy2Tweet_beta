@@ -107,6 +107,7 @@ router.post('/login', (req, res, next) => {
 // Logout handle
 router.get('/logout', (req, res, next) => {
     req.logout();
+    res.clearCookie('user');
     delete req.session.oauth;
     console.log(req.session.oauth);
 
