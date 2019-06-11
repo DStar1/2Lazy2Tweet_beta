@@ -97,6 +97,9 @@ router.post('/register', (req, res) => {
 
 // Login handle
 router.post('/login', (req, res, next) => {
+    ////////// Try to check if there is a cookie first ////////
+
+    ///////////////////////////////////////////////////////////
     passport.authenticate('local', {
         successRedirect: '/dashboard',
         failureRedirect: '/users/login',
@@ -107,7 +110,9 @@ router.post('/login', (req, res, next) => {
 // Logout handle
 router.get('/logout', (req, res, next) => {
     req.logout();
+    res.clearCookie('user');
     delete req.session.oauth;
+    // delete req.session.cookie; //Delete cookie?
     console.log(req.session.oauth);
 
     req.flash('success_msg', 'You are logged out');

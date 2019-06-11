@@ -8,6 +8,7 @@ const { ensureAuthenticated } = require("./config/auth");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cron = require('node-cron');
+const cookieParser = require('cookie-parser');
 
 // var trustProxy = false;
 // if (process.env.DYNO) {
@@ -36,12 +37,14 @@ app.set('view engine', 'ejs');
 // Bodyparser
 // app.use(require('body-parser').urlencoded({ extended: true }));// Need?
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Express session
 app.use(session({
   secret: 'secret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false } // true if https
 }));
 
 // Passport middleware
@@ -76,28 +79,6 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 // app.use('/upload', require('./routes/upload'));
 app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
-
-app.get('/auth', (req, res) => {
-  // console.dir(req.session);
-  // req.user.name;
-  let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
-  console.dir(req.session.oauth);
-  // console.dir({
-  //   "name":req.user.name,
-  //   "email":req.user.email,
-  //   "twitter": twit
-  // });
-  if (typeof req.session.passport !== 'undefined') {
-    res.json({
-      "name":req.user.name,
-      "email":req.user.email,
-      "twitter": twit
-    });
-    // res.json(req.session.passport.user);
-  }
-  else
-    res.json(req.session.passport.user);
-});
 
 const PORT = process.env.PORT || 5000;
 

@@ -15,6 +15,28 @@ let twitterPosts = [
     }
 ];
 
+// app.get('/auth', (req, res) => {
+//   // console.dir(req.session);
+//   // req.user.name;
+//   let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
+//   console.dir(req.session.oauth);
+//   // console.dir({
+//   //   "name":req.user.name,
+//   //   "email":req.user.email,
+//   //   "twitter": twit
+//   // });
+//   if (typeof req.session.passport !== 'undefined') {
+//     res.json({
+//       "name":req.user.name,
+//       "email":req.user.email,
+//       "twitter": twit
+//     });
+//     // res.json(req.session.passport.user);
+//   }
+//   else
+//     res.json(req.session.passport.user);
+// });
+
 // Welcome Page
 router.get('/', (req, res) => res.render("welcome"));
 // Dashboard
@@ -22,6 +44,33 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     ////// res.json(twitterPosts);
     // req.session.username = req.user;
     console.dir(req.session);
+
+    // COOKIES
+    let twit = (typeof(req.session.oauth) === 'undefined') ? 0 : req.session.oauth.access_token_results.screen_name;
+    console.dir(req.session.oauth);
+    if (typeof req.session.passport !== 'undefined') {
+        // res.json({
+        // "name":req.user.name,
+        // "email":req.user.email,
+        // "twitter": twit
+        // });
+        res.cookie('user', {
+            "name":req.user.name,
+            "email":req.user.email,
+            "twitter": twit
+        });
+        // req.session.cookie.user =  {
+        //     "name":req.user.name,
+        //     "email":req.user.email,
+        //     "twitter": twit
+        // }
+    }
+    else {
+        // res.json(req.session.passport.user);
+        req.session.cookie.user =  req.session.passport.user;
+    }
+    //// END COOKIES
+
     res.redirect("http://localhost:3000");
     // res.redirect("/api/posts");
 
