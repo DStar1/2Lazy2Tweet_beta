@@ -78,7 +78,8 @@ app.use(cors());
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 // app.use('/upload', require('./routes/upload'));
-app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
+// app.use('/twitter', ensureAuthenticated, require('./routes/twitter'));
+app.use('/twitter', require('./routes/twitter'));
 
 const PORT = process.env.PORT || 5000;
 

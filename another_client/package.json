@@ -1,0 +1,27 @@
+{
+  "name": "marioplan",
+  "//": "https://still-refuge-69608.herokuapp.com",
+  "proxy": "http://localhost:5000",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@progress/kendo-date-math": "1.4.0",
+    "@progress/kendo-react-common": "2.10.0",
+    "@progress/kendo-react-dateinputs": "2.10.0",
+    "@progress/kendo-react-intl": "2.10.0",
+    "@progress/kendo-react-popup": "2.10.0",
+    "@progress/kendo-react-tooltip": "2.10.0",
+    "axios": "^0.19.0",
+    "js-cookie": "^2.2.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
