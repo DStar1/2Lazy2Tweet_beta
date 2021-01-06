@@ -11,7 +11,7 @@
     "@progress/kendo-react-intl": "2.10.0",
     "@progress/kendo-react-popup": "2.10.0",
     "@progress/kendo-react-tooltip": "2.10.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "prop-types": "15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
